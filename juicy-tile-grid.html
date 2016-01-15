@@ -9,16 +9,14 @@ version: 1.3.0
 <link rel="import" href="../juicy-tile-list/src/juicy-tile-list.html">
 
 <template id="juicy-tile">
-    <div class="juicy-tile"><content></content></div>
+    <td><div class="juicy-tile"><content></content></div></td>
 </template>
 
 <template id="juicy-tile-grid">
     <style>
         :host {
         /** our grid stuff */
-            display: -ms-grid;
-            display: -moz-grid;
-            display: grid;
+            display: table;
             position: static;
         }
 
@@ -31,18 +29,11 @@ version: 1.3.0
         }
 
         .juicy-tight-group {
-            display: -ms-grid;
-            display: -moz-grid;
-            display: grid;
+            display: table;
             height: 100%;
             width: 100%;
         }
 
-        :host(.animate) > .juicy-tile,
-        :host(.animate) > .containerBackground {
-            /*-webkit-transition: width 0.5s, height 0.5s, top 0.5s, left 0.5s, -webkit-transform 0.5s;
-            transition: width 0.5s ease-out, height 0.5s ease-out, top 0.5s ease-out, left 0.5s ease-out, transform 0.5s ease-out;*/
-        }
 
         /** for precalculate */
         :host(.disabled) {
@@ -380,11 +371,12 @@ version: 1.3.0
             * @param  {Object<HTMLElement>} tiles   map (by id) of tiles
             * @param  {Object} packedGroup configuration
             * @param  {Boolean} [hideAll]     should all items be hidden (parent element has .hidden = true)
+            * @param  {HTLMElement} container
             */
-            function applyStyles(tiles, packedGroup, hideAll) {
+            function applyStyles(tiles, packedGroup, hideAll, container) {
                 var itemNo = packedGroup.items.length;
                 var packedItem, element, elementStyle, containerStyle;
-
+debugger
                 if (packedGroup.tightGroup && !hideAll) {
                     /// probs for root
                     containerStyle = tiles[packedGroup.id].style;
@@ -394,6 +386,15 @@ version: 1.3.0
                     containerStyle["-ms-grid-columns"] = containerStyle["grid-template-columns"]
                     containerStyle["-ms-grid-rows"] = containerStyle["grid-template-rows"]
                 }
+                var shadowRow, row;
+                for(var rowNo = 0; rowNo <  packedGroup.rowAxes.length; rowNo++){
+                    row = packedGroup.rowAxes[rowNo];
+                    shadowRow = document.createElement('tr');
+                    shadowRow.classList.add('shadowRow'); // just for debugging
+                    container.appendChild(shadowRow);
+                }
+
+
                 while (itemNo--) {
                     packedItem = packedGroup.items[itemNo];
                     element = tiles[packedItem.id];
@@ -560,7 +561,7 @@ version: 1.3.0
                 drawGridLinesFromTree(packedTree, 0, 0, packedTree.columnAxes, packedTree.rowAxes);
 
                 packedTree.id = "root";
-                applyStyles(tiles, packedTree);
+                applyStyles(tiles, packedTree, undefined, this.shadowContainer);
                 // if (packedTree.direction === "vertical") {
                 //     this.shadowContainer.style.height = "100%";
                 // }
