@@ -1,5 +1,7 @@
-﻿<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>&lt;juicy-tile-grid&gt;</title>
@@ -23,59 +25,67 @@
     <!-- josdejong/jsoneditor#104 workaround-->
     <link rel="stylesheet" type="text/css" href="../jsoneditor/dist/jsoneditor.min.css">
     <style>
-            body {
-                font-family: sans-serif;
-                min-width: 200px;
-                width: 50%;
-                margin: 0 auto;
-                padding: 30px;
-            }
+        body {
+            font-family: sans-serif;
+            min-width: 200px;
+            width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+        }
 
-            juicy-tile-grid {
-                /*width: 300px;
+        juicy-tile-grid {
+            /*width: 300px;
                 height: 150px;*/
-                width: 100%;
-                padding: 1em;
-                box-shadow: inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
-            }
+            width: 100%;
+            padding: 1em;
+            box-shadow: inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
+        }
 
-            juicy-tile-grid > * {
-                box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.75);
-                text-align: center;
-                border: 1px solid lightgray;
-                border-radius: 2px;
-                height: 100%;
-            }
+        juicy-tile-grid > * {
+            box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.75);
+            text-align: center;
+            border: 1px solid lightgray;
+            border-radius: 2px;
+            height: 100%;
+        }
 
-            section input {
-                width: 4em;
-            }
+        section input {
+            width: 4em;
+        }
 
-            juicy-jsoneditor {
-                height: 15em;
-            }
+        juicy-jsoneditor {
+            height: 15em;
+        }
 
+        .feature-detection {
+            box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.75);
+            margin: 10px;
+            padding: 1em;
+        }
+
+        @supports( (display: grid) or (display: -ms-grid)) {
             .feature-detection {
-                box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.75);
-                margin: 10px;
-                padding: 1em;
+                display: none;
             }
-
-            @supports( (display: grid) or (display: -ms-grid) ) {
-                .feature-detection {
-                    display: none;
-                }
-            }
+        }
     </style>
 </head>
+
 <body>
-    <a href="https://github.com/Juicy/juicy-tile-grid"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/Juicy/juicy-tile-grid">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+    </a>
     <article class="markdown-body">
         <h1>&lt;juicy-tile-grid&gt;</h1>
         <div class="feature-detection">
-            We use <a href="http://www.w3.org/TR/css3-grid-layout/">CSS3 Grid Layout</a>. Unfortunately, it is <a href="http://caniuse.com/#search=css%20grid">not widely supported</a>. In Chrome you can enable it through the "experimental Web Platform features" flag in <code>chrome://flags</code> In IE we use it with <code>-ms</code> prefix, which implements pretty old spec, but works. For other browsers, you need to use polyfill.
+            We use <a href="http://www.w3.org/TR/css3-grid-layout/">CSS3 Grid Layout</a>. Unfortunately, it is <a href="http://caniuse.com/#search=css%20grid">not widely supported</a>. In Chrome you can enable it through the "experimental Web Platform
+            features" flag in
+            <code>chrome://flags</code> In IE we use it with
+            <code>-ms</code> prefix, which implements pretty old spec, but works. For other browsers, you need to use polyfill.
         </div>
-        <blockquote><p>Masonry-like Custom Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS only), and adapts it to CSS Grid Layout.</p></blockquote>
+        <blockquote>
+            <p>Masonry-like Custom Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS only), and adapts it to CSS Grid Layout.</p>
+        </blockquote>
         <template is="dom-bind">
             <juicy-tile-grid setup="{{setup}}" refreshonresize>
                 <div>0</div>
@@ -92,7 +102,8 @@
                 </div>
                 <section>
                     <h4>3</h4>
-                    <p><code>heightAdaptive: true</code> - adapt to siblings dynamic height change</p>
+                    <p>
+                        <code>heightAdaptive: true</code> - adapt to siblings dynamic height change</p>
                 </section>
                 <div>
                     <textarea>4</textarea>
@@ -100,7 +111,8 @@
                 <div>5</div>
                 <div>
                     <h4>6</h4>
-                    <p><code>precalculateHeight: true</code> - pre-calculate element size before packing.</p>
+                    <p>
+                        <code>precalculateHeight: true</code> - pre-calculate element size before packing.</p>
                 </div>
                 <div>7</div>
                 <div>8</div>
@@ -114,77 +126,65 @@
         <script type="text/javascript">
             model = {
                 gutter: 8,
-                items: [
-                    {
+                items: [{
                         id: 0,
-                        priority: 0.9,// 0.6,
+                        priority: 0.9, // 0.6,
                         height: 50,
                         width: 50
-                    },
-                    {
+                    }, {
                         id: 1,
-                        priority: 0.8,// 0.9,
+                        priority: 0.8, // 0.9,
                         height: 100,
                         width: 50,
                         hidden: false
-                    },
-                    {
+                    }, {
                         id: 2,
-                        priority: 0.7,// 0.3,
+                        priority: 0.7, // 0.3,
                         height: 180,
                         width: 200,
                         heightDynamic: true
-                    },
-                    {
+                    }, {
                         id: 3,
                         priority: 0.6,
                         height: 180,
                         width: 150,
                         heightAdaptive: true
-                    },
-                    {
+                    }, {
                         id: 4,
                         priority: 0.5,
                         height: 50,
                         width: 200
-                    },
-                    {
+                    }, {
                         id: 5,
                         priority: 0.4,
                         height: 100,
                         width: 50
-                    },
-                    {
+                    }, {
                         id: 6,
                         priority: 0.3,
                         precalculateHeight: true,
                         width: 100
-                    },
-                    {
+                    }, {
                         id: 7,
                         priority: 0.2,
                         height: 50,
                         width: 50
-                    },
-                    {
+                    }, {
                         id: 8,
                         priority: 0.1,
                         height: 50,
                         width: 50
-                    },
-                    {
+                    }, {
                         id: 9,
                         priority: 0.09,
                         height: 150,
                         width: 50
-                    },
-                    {
+                    }, {
                         id: 10,
                         priority: 0.08,
                         height: 50,
                         width: 100
-                    },
-                    {
+                    }, {
                         id: 11,
                         priority: 0.07,
                         height: 50,
@@ -194,7 +194,139 @@
                 ]
             };
             document.querySelector("template").setup = model;
+
+            setTimeout(function() {
+                console.log('wtf');
+                var cloned = JSON.parse(JSON.stringify(model));
+                cloned.items[0].width = 100
+                debugger;
+                // document.querySelector("template").notifyPath('setup', cloned)            ;
+            })
         </script>
+
+
+        down vote
+        <table>
+            <colgroup>
+                <col style="width: 50px;">
+                    <col style="width: 50px;">
+                        <col style="width: 50px;">
+                        <tr class="shadowRow">
+                            <td id="0" style="background-color: pink; width: 50px; height: 50px;">
+                                <div class="juicy-tile">
+                                    <content select="[juicytile='0']"></content>
+                                </div>
+                            </td>
+                            <td id="1" style="grid-column-start: 3; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 100px;">
+                                <div class="juicy-tile">
+                                    <content select="[juicytile='1']"></content>
+                                </div>
+                            </td>
+                            <td id="2" style="grid-column-start: 5; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 200px; height: min-content;">
+                                <div class="juicy-tile">
+                                    <content select="[juicytile='2']"></content>
+                                </div>
+                            </td>
+                        </tr>
+            </colgroup>
+            <!-- Put <thead>, <tbody>, and <tr>'s here! -->
+        </table>
+        <table id="juicy-table-container">
+            <col style="width: 50px;">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <tr class="shadowRow">
+                <td id="0" style="grid-column-start: 1; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 50px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='0']"></content>
+                    </div>
+                </td>
+                <td id="1" style="grid-column-start: 3; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 100px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='1']"></content>
+                    </div>
+                </td>
+                <td id="2" style="grid-column-start: 5; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 200px; height: min-content;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='2']"></content>
+                    </div>
+                </td>
+                <td id="3" style="grid-column-start: 8; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 150px; height: 180px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='3']"></content>
+                    </div>
+                </td>
+                <td id="4" style="grid-column-start: 10; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 200px; height: 50px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='4']"></content>
+                    </div>
+                </td>
+                <td id="5" style="grid-column-start: 15; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 100px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='5']"></content>
+                    </div>
+                </td>
+                <td id="7" style="grid-column-start: 17; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 50px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='7']"></content>
+                    </div>
+                </td>
+            </tr>
+            <tr class="shadowRow"></tr>
+            <tr class="shadowRow">
+                <td id="6" style="width: 100px; grid-column-start: 10; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; height: 0px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='6']"></content>
+                    </div>
+                </td>
+                <td id="8" style="grid-column-start: 1; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 50px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='8']"></content>
+                    </div>
+                </td>
+                <td id="9" style="grid-column-start: 12; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 50px; height: 150px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='9']"></content>
+                    </div>
+                </td>
+            </tr>
+            <tr class="shadowRow">
+                <td id="10" style="grid-column-start: 10; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 100px; height: 50px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='10']"></content>
+                    </div>
+                </td>
+            </tr>
+            <tr class="shadowRow"></tr>
+            <tr class="shadowRow"></tr>
+            <tr class="shadowRow"></tr>
+            <tr class="shadowRow"></tr>
+            <tr class="shadowRow">
+                <td id="11" style="grid-column-start: 1; grid-column-end: undefined; grid-row-start: undefined; grid-row-end: undefined; width: 200px; height: 50px;">
+                    <div class="juicy-tile">
+                        <content select="[juicytile='11']"></content>
+                    </div>
+                </td>
+            </tr>
+            <tr class="shadowRow"></tr>
+            <tr class="shadowRow"></tr>
+        </table>
+
         <section>
             <h3>Features</h3>
             <ul>
@@ -230,4 +362,5 @@
         </footer>
     </article>
 </body>
+
 </html>
