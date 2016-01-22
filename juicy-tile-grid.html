@@ -36,6 +36,11 @@ version: 1.3.0
         td{
             /*box-shadow:     inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
             background-color: pink;*/
+            /* do not grow with content*/
+            /*overflow: hidden;*/
+            margin: 0;
+            padding: 0;
+
         }
 
         .juicy-tile,
@@ -437,11 +442,14 @@ version: 1.3.0
                             shadowTile = tiles[tileItemInRow.id];
                             shadowTile.setAttribute('colspan', tileItemInRow.columnEnd - tileItemInRow.columnStart);
                             shadowTile.setAttribute('rowspan', tileItemInRow.rowEnd - tileItemInRow.rowStart);
-                            tileItemInRow = row.starts[tileInRowIndex];
                             shadowRow.appendChild(shadowTile);
-                            if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1 ){
+                            console.warn('check gutter tile');
+                            // grid columns countr from 1, axes count from 0
+                            if(packedGroup.columnAxes[tileItemInRow.columnEnd-1].gutter.length){
+                            // if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1){
                                 shadowRow.appendChild(document.createElement('td'));
                             }
+                            tileItemInRow = row.starts[tileInRowIndex];
 
                         }
 
