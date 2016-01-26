@@ -21,11 +21,3 @@ juicy-tile-grid >*{
 section input{
     width: 4em;
 }
-
-juicy-tile-grid>:nth-child(3) {
-    overflow:auto;
-}
-
-juicy-tile-grid>:nth-child(4) {
-    overflow:auto;
-}
