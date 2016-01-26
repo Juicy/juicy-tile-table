@@ -132,8 +132,43 @@ version: 1.3.2
          */
         proto._isShadomDOMOutdated = true;
 
+        /**
+         * attachedCallback wrapper to workaround Chromium Bugs
+         * https://code.google.com/p/chromium/issues/detail?id=581176
+         * @see #_attachedCallback
+         */
         proto.attachedCallback = function gridAttached() {
-            // move those two to created also for -grid and -list
+            this.attributeChangedCallback("refreshonattached", this.refreshOnAttached);
+
+            // tomalec: Ugly workaround for https://code.google.com/p/chromium/issues/detail?id=581176
+            // to wait for element to get attached, and Chromium HTML imports release metrics
+            // to measure elements inner dimention if not provided in setup
+            // XXX: causes FOUC
+            // if (this.refreshOnAttached &&
+            //         navigator.userAgent.toLowerCase().indexOf('chrome') > -1 && // is chrome
+            //         (!this.setup ||
+            //             (!this.setup.width || this.setup.direction == "vertical" && !this.setup.height)
+            //         )
+            //     ) {
+            //     What is worse, we need it anyway for `precalculate*`
+            if (
+                this.refreshOnAttached &&
+                navigator.userAgent.toLowerCase().indexOf('chrome') > -1 // is chrome
+                ) {
+                var list = this;
+                setTimeout(function(){
+                    list._attachedCallback();
+                });
+            } else {
+                this._attachedCallback();
+            }
+            // ---
+        };
+        /**
+         * The real meat of attachedCallback
+         */
+        proto._attachedCallback = function deferredGridAttached() {
+			// move those two to created also for -grid and -list
             var root = this.createShadowRoot();
             var clone = document.importNode(template.content, true);
 
@@ -157,21 +192,14 @@ version: 1.3.2
             // attributeChangedCallback for refresh* checks the value itselfes
             this.attributeChangedCallback("refreshonresize", this.refreshonresize);
             this.attributeChangedCallback("refreshonmutation", this.refreshonmutation);
-            this.attributeChangedCallback("refreshonattached", this.refreshonattached);
+            this.attributeChangedCallback("refreshonattached", this.refreshOnAttached);
             this.attributeChangedCallback("defaulttilesetup", this.defaulttilesetup, this.getAttribute("defaulttilesetup"));
 
 
             if (this.refreshOnAttached){
-                // This is ugly hack to wait for most probably asynchronous content distribution (tomalec)
-                var list = this;
-                setTimeout(function(){
-                    list.refresh();
-                    list.isReady = true;
-                });
-                // --
-            } else {
-                this.isReady = true;
+                this.refresh();
             }
+                this.isReady = true;
         };
 
         proto._listSetupChanged = proto._setupChanged;
@@ -454,7 +482,7 @@ version: 1.3.2
                             if(packedGroup.columnAxes[tileItemInRow.columnEnd-1].gutter.length){
                             // if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1){
                                 shadowRow.appendChild(document.createElement('td'));
-                            }
+                }
                             tileItemInRow = row.starts[tileInRowIndex];
 
                         }
@@ -649,6 +677,13 @@ debugger
 
         proto.parentPackItems = proto.packItems;
 
+        /**
+         * Add a specific class for precalculate phase
+         * Call juicy-tile-list.packItems to precalculate dimensions
+         * @TODO (tomalec): Juicy/juicy-tile-grid/issues/41 start here
+         * @param  {Object} setup
+         * @return {Object}       packed setup
+         */
         proto.packItems = function packDOM2Grid(setup) {
             this.classList.add("disabled");
             var packedTree = this.parentPackItems(setup);
