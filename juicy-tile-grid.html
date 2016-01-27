@@ -46,25 +46,26 @@ version: 1.3.2
             vertical-align: top;
 
         }
-        col:nth-child(odd){
+        /*col:nth-child(odd){
             background-color: lightblue;
         }
         col:nth-child(even){
             background-color: #E6F4F9;
-        }
+        }*/
 
         .juicy-tile,
         .containerBackground,
         .juicy-tight-group > .containerBackground,
         .juicy-tight-group > .juicy-tile {
-            display: inline-block;
+            /*display: inline-block;*/
             position: static;
             height: 100%;
             width: 100%;
+            overflow: auto;
         }
 
         .juicy-tight-group {
-            display: table;
+            /*display: table;*/
             height: 100%;
             width: 100%;
         }
@@ -461,23 +462,65 @@ version: 1.3.2
                         // debugger
                         var tileInRowIndex = row.starts.length;
                         var tileItemInRow;
+                        //fixrowspans to empty rows
+                        if(tileInRowIndex === 0){
+                            shadowRow.appendChild(document.createElement('td'));
+                        }
                         while(tileInRowIndex--){
                             tileItemInRow = row.starts[tileInRowIndex];
                             // TODO create SD?
                             shadowTile = tiles[tileItemInRow.id];
                             // loose groups does not have tiles, and we do not render a thing for them
                             if(shadowTile){
-                            shadowTile.setAttribute('colspan', tileItemInRow.columnEnd - tileItemInRow.columnStart);
-                            shadowTile.setAttribute('rowspan', tileItemInRow.rowEnd - tileItemInRow.rowStart);
-                            shadowRow.appendChild(shadowTile);
-                            console.warn('check gutter tile');
-                            // grid columns countr from 1, axes count from 0
-                            if(packedGroup.columnAxes[tileItemInRow.columnEnd-1].gutter.length){
-                            // if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1){
-                                shadowRow.appendChild(document.createElement('td'));
+                                shadowTile.setAttribute('colspan', tileItemInRow.columnEnd - tileItemInRow.columnStart);
+                                shadowTile.setAttribute('rowspan', tileItemInRow.rowEnd - tileItemInRow.rowStart);
+
+
+                                var hidden = hideAll || tileItemInRow.hidden;
+
+                                if (tileItemInRow.items) {// virtual container
+                                    shadowTile.appendChild(
+                                        applyStyles(tiles, tileItemInRow, hidden)
+                                    );
+                                }
+
+                                var elementStyle = shadowTile.firstChild.style;
+                                elementStyle.height = tileItemInRow.height + 'px';
+                                elementStyle.width = tileItemInRow.width + 'px';
+
+                                if (hidden) {
+                                    elementStyle.display = "none";
+                                } else {
+                                    // force default - block
+                                    elementStyle.display = "";
+
+                                    var oversize = tileItemInRow.oversize || 0;
+
+                                    if (tileItemInRow.background !== undefined) {
+                                        elementStyle.backgroundColor = tileItemInRow.background || "transparent";
+                                    } else {
+                                        elementStyle.backgroundColor = "";
+                                    }
+                                    elementStyle.outline = tileItemInRow.outline || "";
+
+                                    if (oversize) {
+                                        elementStyle.padding = oversize + "px";
+                                        elementStyle.margin = "-" + oversize + "px";
+                                    } else {
+                                        elementStyle.padding = "";
+                                        elementStyle.margin = "";
+                                    }
+                                }
+
+                                shadowRow.appendChild(shadowTile);
+
+                                console.log('check gutter tile');
+                                // grid columns countr from 1, axes count from 0
+                                if(packedGroup.columnAxes[tileItemInRow.columnEnd-1].gutter.length){
+                                // if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1)
+                                    shadowRow.appendChild(document.createElement('td'));
+                                }
                             }
-                            }
-                            tileItemInRow = row.starts[tileInRowIndex];
 
                         }
 
@@ -486,44 +529,44 @@ version: 1.3.2
                 }
 
 
-                while (itemNo--) {
-                    packedItem = packedGroup.items[itemNo];
-                    element = tiles[packedItem.id];
-                    if (!element) {
-                        continue; //if element is not found, perhaps DOM was not yet rendered? Skip gracefully
-                    }
-                    elementStyle = element.style;
-                    // hide items marked as hidden ;)
-                    hidden = hideAll || packedItem.hidden;
-                    if (hidden) {
-                        elementStyle.display = "none";
-                    } else {
-                        // force default - block
-                        elementStyle.display = "";
-
-                        var oversize = packedItem.oversize || 0;
-
-                        if (packedItem.background !== undefined) {
-                            elementStyle.backgroundColor = packedItem.background || "transparent";
-                        } else {
-                            elementStyle.backgroundColor = "";
-                        }
-                        elementStyle.outline = packedItem.outline || "";
-
-                        if (oversize) {
-                            elementStyle.padding = oversize + "px";
-                            elementStyle.margin = "-" + oversize + "px";
-                        } else {
-                            elementStyle.padding = "";
-                            elementStyle.margin = "";
-                        }
-                    }
-                    if (packedItem.items) {// virtual container
-                        (element.firstChild || element).appendChild(
-                            applyStyles(tiles, packedItem, hidden)
-                        );
-                    }
-                }
+                // while (itemNo--) {
+                //     packedItem = packedGroup.items[itemNo];
+                //     element = tiles[packedItem.id];
+                //     if (!element) {
+                //         continue; //if element is not found, perhaps DOM was not yet rendered? Skip gracefully
+                //     }
+                //     elementStyle = element.style;
+                //     // hide items marked as hidden ;)
+                //     hidden = hideAll || packedItem.hidden;
+                //     if (hidden) {
+                //         elementStyle.display = "none";
+                //     } else {
+                //         // force default - block
+                //         elementStyle.display = "";
+                //
+                //         var oversize = packedItem.oversize || 0;
+                //
+                //         if (packedItem.background !== undefined) {
+                //             elementStyle.backgroundColor = packedItem.background || "transparent";
+                //         } else {
+                //             elementStyle.backgroundColor = "";
+                //         }
+                //         elementStyle.outline = packedItem.outline || "";
+                //
+                //         if (oversize) {
+                //             elementStyle.padding = oversize + "px";
+                //             elementStyle.margin = "-" + oversize + "px";
+                //         } else {
+                //             elementStyle.padding = "";
+                //             elementStyle.margin = "";
+                //         }
+                //     }
+                //     if (packedItem.items) {// virtual container
+                //         (element.firstChild || element).appendChild(
+                //             applyStyles(tiles, packedItem, hidden)
+                //         );
+                //     }
+                // }
                 return table;
             }
 
