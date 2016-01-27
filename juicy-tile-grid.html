@@ -27,6 +27,8 @@ version: 1.3.2
             table-layout: fixed;
             border-spacing: 0;
             width: 100%;
+
+            /*border-collapse: collapse;*/
         }
         /*
         Done inline
@@ -445,19 +447,27 @@ version: 1.3.2
                     setGridTracks("row", packedGroup.rowAxes, "heightFlexible", "heightDynamic", packedGroup.height);
                     setGridTracks("column", packedGroup.columnAxes, "widthFlexible", "widthDynamic", packedGroup.width);
 
-                    var shadowRow, row, rowItem, shadowTile, shadowCell;
-
+                    var shadowRow, row, rowEnd, rowItem, shadowTile, shadowCell, column;
                     // last columnAxes is the end line of the last row
                     for(var columnNo = 1; columnNo <  packedGroup.columnAxes.length; columnNo++){
-                        col = document.createElement('col');
-                        col.setAttribute('style', 'width:'+packedGroup.columnAxes[columnNo].size+';');
-                        table.appendChild(col);
+                        column = packedGroup.columnAxes[columnNo];
+                            debugger
+                        if( !column.isGutterLine ){
+                            col = document.createElement('col');
+                            col.setAttribute('style', 'width:'+ column.size+';');
+                            table.appendChild(col);
+                        }
                     }
                     // last rowAxes is the end line of the last row
                     for(var rowNo = 0; rowNo <  packedGroup.rowAxes.length-1; rowNo++){
                         row = packedGroup.rowAxes[rowNo];
+                        rowEnd = packedGroup.rowAxes[rowNo+1];
+                        if(rowEnd.isGutterLine){
+                            debugger
+                            continue;
+                        }
                         shadowRow = document.createElement('tr');
-                        shadowRow.style.height = packedGroup.rowAxes[rowNo+1].size;
+                        shadowRow.style.height = rowEnd.size;
                         shadowRow.classList.add('shadowRow'); // just for debugging
                         // debugger
                         var tileInRowIndex = row.starts.length;
@@ -472,8 +482,9 @@ version: 1.3.2
                             shadowTile = tiles[tileItemInRow.id];
                             // loose groups does not have tiles, and we do not render a thing for them
                             if(shadowTile){
-                                shadowTile.setAttribute('colspan', tileItemInRow.columnEnd - tileItemInRow.columnStart);
-                                shadowTile.setAttribute('rowspan', tileItemInRow.rowEnd - tileItemInRow.rowStart);
+                                // we assume that every second track is a gutter
+                                shadowTile.setAttribute('colspan', Math.ceil((tileItemInRow.columnEnd - tileItemInRow.columnStart)/2));
+                                shadowTile.setAttribute('rowspan', Math.ceil((tileItemInRow.rowEnd - tileItemInRow.rowStart)/2));
 
 
                                 var hidden = hideAll || tileItemInRow.hidden;
@@ -503,13 +514,16 @@ version: 1.3.2
                                     }
                                     elementStyle.outline = tileItemInRow.outline || "";
 
+                                    var margin = 0;
                                     if (oversize) {
                                         elementStyle.padding = oversize + "px";
-                                        elementStyle.margin = "-" + oversize + "px";
-                                    } else {
-                                        elementStyle.padding = "";
-                                        elementStyle.margin = "";
+                                        margin = -oversize;
                                     }
+                                    if (tileItemInRow.gutter){
+                                        elementStyle['border-spacing'] = elementStyle.borderSpacing = tileItemInRow.gutter + 'px';
+                                        margin -= tileItemInRow.gutter;
+                                    }
+                                    elementStyle.margin = margin + "px";
                                 }
 
                                 shadowRow.appendChild(shadowTile);
@@ -518,7 +532,7 @@ version: 1.3.2
                                 // grid columns countr from 1, axes count from 0
                                 if(packedGroup.columnAxes[tileItemInRow.columnEnd-1].gutter.length){
                                 // if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1)
-                                    shadowRow.appendChild(document.createElement('td'));
+                                    // shadowRow.appendChild(document.createElement('td'));
                                 }
                             }
 
@@ -610,6 +624,7 @@ version: 1.3.2
                     } else if (openedGutters.length) {
                         // Gutters should be fixed size
                         str += trackSize + "px ";
+                        currentLine.isGutterLine = true;
                     } else {
                         //does not contain any gutter
                         switch (countProperty(openedTiles, flexPropertyName)) {
@@ -702,8 +717,15 @@ version: 1.3.2
                 drawGridLinesFromTree(packedTree, 0, 0, packedTree.columnAxes, packedTree.rowAxes);
 
                 packedTree.id = "root";
+
+                var rootTable = applyStyles(tiles, packedTree, undefined, this.shadowContainer)
+
+                if (packedTree.gutter){
+                    rootTable.style['border-spacing'] = packedTree.gutter + 'px'
+                    rootTable.style.margin = '-' + packedTree.gutter + 'px';
+                }
                 this.shadowRoot.insertBefore(
-                    applyStyles(tiles, packedTree, undefined, this.shadowContainer),
+                    rootTable,
                     this.shadowRoot.firstChild
                 );
                 // if (packedTree.direction === "vertical") {
