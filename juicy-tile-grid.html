@@ -60,15 +60,20 @@ version: 1.3.2
         .juicy-tight-group > .juicy-tile {
             /*display: inline-block;*/
             position: static;
+            /*height: 100%;
+            width: 100%;*/
+            overflow: auto;
+        }
+
+        .juicy-tile{
             height: 100%;
             width: 100%;
-            overflow: auto;
         }
 
         .juicy-tight-group {
             /*display: table;*/
-            height: 100%;
-            width: 100%;
+            /*height: 100%;
+            width: 100%;*/
         }
 
 
@@ -570,7 +575,6 @@ version: 1.3.2
                             case 0: // all are non-flex
                                 // there is dynamic
                                 if (countProperty(openedTiles, dynamicPropertyName)) {
-                                    debugger
                                     // str += "minmax( min-content, max-content ) "
                                     // TODO: check just width auto
                                     currentLine.minSize = 'min-content';
