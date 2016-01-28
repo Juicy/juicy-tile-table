@@ -18,10 +18,6 @@ version: 1.3.2
         /** our grid stuff */
             display: block;
         }
-        #juicy-table-container{
-            width: 100%;
-            height: 100%;
-        }
         /*table , for Shimmed, better use class:*/
         .juicy-tile-table{
             table-layout: fixed;
@@ -107,10 +103,9 @@ version: 1.3.2
         }
         */
     </style>
-    <div id="juicy-table-container"></div>
     <content select="script" class="not-a-tile"></content>
     <content select="style" class="not-a-tile"></content>
-    <content></content>
+    <!-- <content></content> -->
 </template>
 
 <script>
@@ -169,7 +164,7 @@ version: 1.3.2
             // IE/polyfill support
             //
             root.appendChild(clone);
-            this.shadowContainer = root.getElementById('juicy-table-container');
+            this.shadowContainer = root;
             // this.shadowContainer = root;
             // this.shadowContainer.style = root.host.style;
 
@@ -443,6 +438,9 @@ version: 1.3.2
                 table.classList.add('juicy-tile-table');
                 if(packedGroup.direction === "vertical"){
                     table.style.width = 'auto';
+                    table.style.minHeight = packedGroup.height + 'px';
+                } else {
+                    table.style.minWidth = packedGroup.width + 'px';
                 }
 
                 if (packedGroup.tightGroup && !hideAll) {
@@ -463,7 +461,8 @@ version: 1.3.2
                         // IDEA tomalec: create Chromium issue about isolated problem
                         col.setAttribute('style', 'width:'+packedGroup.columnAxes[columnNo].size+';' +
                             'min-width:'+ packedGroup.columnAxes[columnNo].minSize +';' +
-                            'max-width:'+ packedGroup.columnAxes[columnNo].maxSize +';');
+                            // 'max-width:'+ packedGroup.columnAxes[columnNo].maxSize +';');
+                            'width:'+ packedGroup.columnAxes[columnNo].maxSize +';');
                         table.appendChild(col);
                     }
                     // last rowAxes is the end line of the last row
@@ -674,6 +673,12 @@ version: 1.3.2
                 drawGridLinesFromTree(packedTree, 0, 0, packedTree.columnAxes, packedTree.rowAxes);
 
                 packedTree.id = "root";
+                if(packedTree.direction === "vertical"){
+                    this.style.width = 'auto';
+                    this.style.minHeight = packedTree.height + 'px';
+                } else {
+                    this.style.minWidth = packedTree.width + 'px';
+                }
                 this.shadowRoot.insertBefore(
                     applyStyles(tiles, packedTree, undefined, this.shadowContainer),
                     this.shadowRoot.firstChild
