@@ -27,6 +27,7 @@ version: 1.3.2
             table-layout: fixed;
             border-spacing: 0;
             width: 100%;
+            border-collapse: collapse;
         }
         /*
         Done inline
@@ -442,131 +443,81 @@ version: 1.3.2
                 if (packedGroup.tightGroup && !hideAll) {
                     /// probs for root
 
+                    // IDEA tomalec: Consider merging those 3 lines into single funciton for better performance
                     setGridTracks("row", packedGroup.rowAxes, "heightFlexible", "heightDynamic", packedGroup.height);
                     setGridTracks("column", packedGroup.columnAxes, "widthFlexible", "widthDynamic", packedGroup.width);
+                    var tableGrid = getFullTableGrid( packedGroup.rowAxes, packedGroup.columnAxes);
 
-                    var shadowRow, row, rowItem, shadowTile, shadowCell;
+                    var shadowRow, row, shadowTile;
 
                     // last columnAxes is the end line of the last row
                     for(var columnNo = 1; columnNo <  packedGroup.columnAxes.length; columnNo++){
                         col = document.createElement('col');
+                        // force inline style
+                        // .style does not work with ShadowDOM distribution for some reason
+                        // IDEA tomalec: create Chromium issue about isolated problem
                         col.setAttribute('style', 'width:'+packedGroup.columnAxes[columnNo].size+';');
                         table.appendChild(col);
                     }
                     // last rowAxes is the end line of the last row
-                    for(var rowNo = 0; rowNo <  packedGroup.rowAxes.length-1; rowNo++){
-                        row = packedGroup.rowAxes[rowNo];
+                    for(var rowNo = 0; rowNo <  tableGrid.length; rowNo++){
+                        row = tableGrid[rowNo];
                         shadowRow = document.createElement('tr');
                         shadowRow.style.height = packedGroup.rowAxes[rowNo+1].size;
                         shadowRow.classList.add('shadowRow'); // just for debugging
-                        // debugger
-                        var tileInRowIndex = row.starts.length;
-                        var tileItemInRow;
-                        //fixrowspans to empty rows
-                        if(tileInRowIndex === 0){
-                            shadowRow.appendChild(document.createElement('td'));
-                        }
-                        while(tileInRowIndex--){
-                            tileItemInRow = row.starts[tileInRowIndex];
-                            // TODO create SD?
-                            shadowTile = tiles[tileItemInRow.id];
-                            // loose groups does not have tiles, and we do not render a thing for them
-                            if(shadowTile){
-                                shadowTile.setAttribute('colspan', tileItemInRow.columnEnd - tileItemInRow.columnStart);
-                                shadowTile.setAttribute('rowspan', tileItemInRow.rowEnd - tileItemInRow.rowStart);
+
+                        for(var colNo = 0; colNo < packedGroup.columnAxes.length ; colNo++){
+                            tileItem = row[colNo];
+                            if(tileItem === null){// gutter
+                                shadowRow.appendChild(document.createElement('td'));
+                            } else if(tileItem !== undefined){ // not a span but tile
+
+                                // TODO create SD?
+                                shadowTile = tiles[tileItem.id];
+                                // loose groups does not have tiles, and we do not render a thing for them
+                                if(shadowTile){
+                                    shadowTile.setAttribute('colspan', tileItem.columnEnd - tileItem.columnStart);
+                                    shadowTile.setAttribute('rowspan', tileItem.rowEnd - tileItem.rowStart);
 
 
-                                var hidden = hideAll || tileItemInRow.hidden;
+                                    var hidden = hideAll || tileItem.hidden;
 
-                                if (tileItemInRow.items) {// virtual container
-                                    shadowTile.appendChild(
-                                        applyStyles(tiles, tileItemInRow, hidden)
-                                    );
-                                }
-
-                                var elementStyle = shadowTile.firstChild.style;
-                                elementStyle.height = tileItemInRow.height + 'px';
-                                elementStyle.width = tileItemInRow.width + 'px';
-
-                                if (hidden) {
-                                    elementStyle.display = "none";
-                                } else {
-                                    // force default - block
-                                    elementStyle.display = "";
-
-                                    var oversize = tileItemInRow.oversize || 0;
-
-                                    if (tileItemInRow.background !== undefined) {
-                                        elementStyle.backgroundColor = tileItemInRow.background || "transparent";
-                                    } else {
-                                        elementStyle.backgroundColor = "";
+                                    if (tileItem.items) {// virtual container
+                                        shadowTile.appendChild(
+                                            applyStyles(tiles, tileItem, hidden)
+                                        );
                                     }
-                                    elementStyle.outline = tileItemInRow.outline || "";
 
-                                    if (oversize) {
-                                        elementStyle.padding = oversize + "px";
-                                        elementStyle.margin = "-" + oversize + "px";
+                                    var elementStyle = shadowTile.firstChild.style;
+                                    elementStyle.height = tileItem.height + 'px';
+                                    elementStyle.width = tileItem.width + 'px';
+
+                                    if (hidden) {
+                                        elementStyle.display = "none";
                                     } else {
-                                        elementStyle.padding = "";
-                                        elementStyle.margin = "";
+                                        var oversize = tileItem.oversize || 0;
+
+                                        if (tileItem.background !== undefined) {
+                                            elementStyle.backgroundColor = tileItem.background || "transparent";
+                                        }
+                                        elementStyle.outline = tileItem.outline || "";
+
+                                        if (oversize) {
+                                            elementStyle.padding = oversize + "px";
+                                            elementStyle.margin = "-" + oversize + "px";
+                                        }
                                     }
-                                }
 
-                                shadowRow.appendChild(shadowTile);
+                                    shadowRow.appendChild(shadowTile);
 
-                                console.log('check gutter tile');
-                                // grid columns countr from 1, axes count from 0
-                                if(packedGroup.columnAxes[tileItemInRow.columnEnd-1].gutter.length){
-                                // if(tileItemInRow.columnEnd < packedGroup.columnAxes.length -1)
-                                    shadowRow.appendChild(document.createElement('td'));
                                 }
                             }
-
                         }
 
                         table.appendChild(shadowRow);
                     }
                 }
 
-
-                // while (itemNo--) {
-                //     packedItem = packedGroup.items[itemNo];
-                //     element = tiles[packedItem.id];
-                //     if (!element) {
-                //         continue; //if element is not found, perhaps DOM was not yet rendered? Skip gracefully
-                //     }
-                //     elementStyle = element.style;
-                //     // hide items marked as hidden ;)
-                //     hidden = hideAll || packedItem.hidden;
-                //     if (hidden) {
-                //         elementStyle.display = "none";
-                //     } else {
-                //         // force default - block
-                //         elementStyle.display = "";
-                //
-                //         var oversize = packedItem.oversize || 0;
-                //
-                //         if (packedItem.background !== undefined) {
-                //             elementStyle.backgroundColor = packedItem.background || "transparent";
-                //         } else {
-                //             elementStyle.backgroundColor = "";
-                //         }
-                //         elementStyle.outline = packedItem.outline || "";
-                //
-                //         if (oversize) {
-                //             elementStyle.padding = oversize + "px";
-                //             elementStyle.margin = "-" + oversize + "px";
-                //         } else {
-                //             elementStyle.padding = "";
-                //             elementStyle.margin = "";
-                //         }
-                //     }
-                //     if (packedItem.items) {// virtual container
-                //         (element.firstChild || element).appendChild(
-                //             applyStyles(tiles, packedItem, hidden)
-                //         );
-                //     }
-                // }
                 return table;
             }
 
@@ -710,6 +661,60 @@ version: 1.3.2
                 //     this.shadowContainer.style.height = "100%";
                 // }
             };
+            /**
+             * Create a nxm array with table cells
+             * undefined - spanned cell
+             * null - gutter
+             * Object - tile that starts here
+             * XXX: we heavily rely on assumption that tiles do not overlap each other at any grid node
+             * @param  {Array} rowAxes grid axes as in #drawGridLines
+             * @param  {Array} columnAxes column axes as in #drawGridLines
+             * @return {Array}         rows x cols table
+             */
+            function getFullTableGrid(rowAxes, columnAxes){
+                function notALooseGroup(e){
+                    return !e.items || e.tightGroup;
+                }
+                var grid = [];
+                var rowNo, rowsLen = rowAxes.length, howManyTilesStartsHere, firstToStart,
+                    tilesWoLooseGroups,
+                    columnNo, columnsLen = columnAxes.length;
+                var gridRow, spans = Array(columnsLen-1), spanning = 0, horizontalSpan, verticalSpan;
+
+                for ( rowNo=0; rowNo < rowsLen - 1; rowNo++){
+                    gridRow = [];
+                    grid.push(gridRow);
+                    // filter out loos groups, as we cannot represent them as HTML nodes in a <table>
+                    tilesWoLooseGroups = rowAxes[rowNo].starts.filter(notALooseGroup);
+                    howManyTilesStartsHere = tilesWoLooseGroups.length;
+                    // XXX: we assume descending order of gridlines in starts
+                    firstToStart = tilesWoLooseGroups[--howManyTilesStartsHere];
+                    for ( columnNo=1; columnNo < columnsLen; columnNo++){
+                        if(spans[columnNo]>0){
+                            spans[columnNo]--;
+                            gridRow.push(undefined);
+                        } else if(firstToStart && firstToStart.columnStart === columnNo && firstToStart.rowStart === rowNo+1){
+                            gridRow.push(firstToStart);
+                            // 0-based span as a distance between axes
+                            horizontalSpan = firstToStart.columnEnd - firstToStart.columnStart - 1;
+                            verticalSpan = firstToStart.rowEnd - firstToStart.rowStart - 1;
+                            spans[columnNo] = verticalSpan;
+                            for(spanning = 0; spanning < horizontalSpan; spanning++){
+                                columnNo++;
+                                spans[columnNo] = verticalSpan;
+                                gridRow.push(undefined);
+                            }
+                            firstToStart = tilesWoLooseGroups[--howManyTilesStartsHere];
+                        } else {
+                            // gutter
+                            gridRow.push(null);
+                        }
+
+                    }
+                }
+                return grid;
+
+            }
         }());
 
         // proto.parentPackItems = proto.packItems;
