@@ -687,8 +687,11 @@ version: 1.3.2
                 function notALooseGroup(e){
                     return !e.items || e.tightGroup;
                 }
+                function byX(a, b){
+                    return b.x - a.x;
+                }
                 var grid = [];
-                var rowNo, rowsLen = rowAxes.length, howManyTilesStartsHere, firstToStart,
+                var rowNo, rowsLen = rowAxes.length, howManyTilesLeft, firstToStart,
                     tilesWoLooseGroups,
                     columnNo, columnsLen = columnAxes.length;
                 var gridRow, spans = Array(columnsLen-1), spanning = 0, horizontalSpan, verticalSpan;
@@ -697,10 +700,12 @@ version: 1.3.2
                     gridRow = [];
                     grid.push(gridRow);
                     // filter out loos groups, as we cannot represent them as HTML nodes in a <table>
-                    tilesWoLooseGroups = rowAxes[rowNo].starts.filter(notALooseGroup);
-                    howManyTilesStartsHere = tilesWoLooseGroups.length;
+                    tilesWoLooseGroups = rowAxes[rowNo].starts
+                                            .sort(byX)
+                                            .filter(notALooseGroup);
+                    howManyTilesLeft = tilesWoLooseGroups.length;
                     // XXX: we assume descending order of gridlines in starts
-                    firstToStart = tilesWoLooseGroups[--howManyTilesStartsHere];
+                    firstToStart = tilesWoLooseGroups[--howManyTilesLeft];
                     for ( columnNo=1; columnNo < columnsLen; columnNo++){
                         if(spans[columnNo]>0){
                             spans[columnNo]--;
@@ -716,7 +721,7 @@ version: 1.3.2
                                 spans[columnNo] = verticalSpan;
                                 gridRow.push(undefined);
                             }
-                            firstToStart = tilesWoLooseGroups[--howManyTilesStartsHere];
+                            firstToStart = tilesWoLooseGroups[--howManyTilesLeft];
                         } else {
                             // gutter
                             gridRow.push(null);
