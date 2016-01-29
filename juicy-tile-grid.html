@@ -20,7 +20,6 @@ version: 1.3.2
 <template id="juicy-tile-grid">
     <style>
         :host {
-        /** our grid stuff */
             display: block;
         }
         /*table , for Shimmed, better use class:*/
@@ -35,10 +34,10 @@ version: 1.3.2
         .juicy-tile-table.vertical{
             width: auto;
         }*/
-        /** TODO add class for better experiance in shimmed browsers*/
-        td{
-            /*box-shadow:     inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
-            background-color: pink;*/
+        /** We are overspeficying selectors, to be less problematic with
+            bleeding ShadowCSS in shimmed browsers */
+        /*td{*/
+        .juicy-shadow-row > td{
             /* do not grow with content*/
             /*overflow: hidden;*/
             margin: 0;
@@ -48,12 +47,6 @@ version: 1.3.2
             vertical-align: top;
 
         }
-        /*col:nth-child(odd){
-            background-color: lightblue;
-        }
-        col:nth-child(even){
-            background-color: #E6F4F9;
-        }*/
 
         .juicy-tile,
         .containerBackground,
@@ -71,21 +64,15 @@ version: 1.3.2
             width: 100%;
         }
 
-        .juicy-tight-group {
-            /*display: table;*/
-            /*height: 100%;
-            width: 100%;*/
-        }
+        /*.juicy-tight-group {
+            display: table;
+        }*/
 
 
         /** for precalculate */
         :host(.disabled) {
             position: relative;
             z-index: 0;
-        }
-
-        polyfill-next-selector {
-            content: ':host :host(.disabled)> .juicy-tile';
         }
 
         :host(.disabled) .juicy-tile {
@@ -99,14 +86,6 @@ version: 1.3.2
         .containerBackground.juicy-tight-group{
             z-index: initial;
         }
-
-        /*
-        // Makes <a> un-clickable and un-focusable, but required for background.
-        :host > .containerBackground,
-        .juicy-tight-group > .containerBackground {
-            z-index: -1;
-        }
-        */
     </style>
     <content select="script" class="not-a-tile"></content>
     <content select="style" class="not-a-tile"></content>
@@ -479,7 +458,7 @@ version: 1.3.2
                         shadowRow.style.height = packedGroup.rowAxes[rowNo+1].size;
                         shadowRow.style.minHeight = packedGroup.rowAxes[rowNo+1].minSize;
                         shadowRow.style.maxHeight = packedGroup.rowAxes[rowNo+1].maxSize;
-                        shadowRow.classList.add('shadowRow'); // just for debugging
+                        shadowRow.classList.add('juicy-shadow-row'); // just for debugging
 
                         for(var colNo = 0; colNo < packedGroup.columnAxes.length ; colNo++){
                             tileItem = row[colNo];

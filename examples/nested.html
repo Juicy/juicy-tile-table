@@ -21,7 +21,10 @@
             padding: 1em;
             box-shadow: inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
         }
-        juicy-tile-grid > *{
+        /* Workaround simple bleeding shimmed ShadowDOM */
+        /*juicy-tile-grid >*{*/
+        juicy-tile-grid >*:not(.juicy-tile-table),
+        juicy-tile-grid .juicy-tile{
             box-shadow: inset 0px 0px 10px 0px rgba(50, 50, 50, 0.75);
             height: 100%;
         }
