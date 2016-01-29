@@ -8,9 +8,14 @@ version: 1.3.2
 <!-- Import juicy-tile-list -->
 <link rel="import" href="../juicy-tile-list/src/juicy-tile-list.html">
 
+<!-- Workaround for IE that does not support <td>s in template (outside of tr),
+    we will create td manually later -->
 <template id="juicy-tile">
-    <td><div class="juicy-tile"><content></content></div></td>
+    <div class="juicy-tile"><content></content></div>
 </template>
+<!-- <template id="juicy-tile">
+    <td><div class="juicy-tile"><content></content></div></td>
+</template> -->
 
 <template id="juicy-tile-grid">
     <style>
@@ -263,7 +268,9 @@ version: 1.3.2
             */
             function createTileWrapper(id, tiles) {
                 var frag = document.importNode(tileDecorator, true);
-                var tile = frag.children[0];
+                // Workaround for IE that does not support <td>s in template (outside of tr)
+                var tile = document.createElement('td');
+                tile.appendChild(frag.children[0]);
                 tile.id = id;
                 tile.firstChild.firstChild.setAttribute("select", "[juicytile='" + id + "']");
                 // add to key based map
