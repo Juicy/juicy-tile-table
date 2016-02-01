@@ -172,22 +172,7 @@ version: 1.3.2
             if (this.refreshOnAttached){
                 this.refresh();
             }
-                this.isReady = true;
-        };
-
-        proto._listSetupChanged = proto._setupChanged;
-
-        /**
-        * Perform action when setup get changed
-        * Sets this._isShadomDOMOutdated to true by default (id undefined)
-        * @param {Object} [oldVal] old value
-        * @param {Object} [newVal] new value
-        */
-        proto._setupChanged = function (oldVal, newVal) {
-            if (this._isShadomDOMOutdated === undefined) {
-                this._isShadomDOMOutdated = true;
-            }
-            this._listSetupChanged(oldVal, newVal);
+            this.isReady = true;
         };
 
         proto.orig_updateWrappers = proto.updateWrappers;
@@ -734,15 +719,19 @@ version: 1.3.2
             }
         }());
 
-        // proto.parentPackItems = proto.packItems;
-        //
-        // proto.packItems = function packDOM2Grid(setup) {
-        //     this.classList.add("disabled");
-        //     var packedTree = this.parentPackItems(setup);
-        //     this.classList.remove("disabled");
-        //     return packedTree;
-        // };
+        /** Use package packItems method to ommit/disable pre-calculate magic */
         proto.packItems = Package.prototype.packItems;
+
+        var juicyTileListRefresh = proto.refresh;
+        /**
+         * Overwrite -list.refresh to always do hard refresh when attached
+         * @return whatever -list.refresh returns
+         */
+        proto.refresh = function tableRefresh(){
+            return juicyTileListRefresh.call(this, this.isReady);
+        };
+
+
 
         window.JuicyTileGrid = document.registerElement("juicy-tile-grid", {
             prototype: JuicyTileGridPrototype
