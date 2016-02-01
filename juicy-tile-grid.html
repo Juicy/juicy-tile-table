@@ -608,6 +608,10 @@ version: 1.3.2
                     previousLine = currentLine;
                 }
 
+                // Use calc to mimic fractions and grid sizing algorithm
+                // https://www.w3.org/TR/css-grid-1/#layout-algorithm
+                // XXX tomalec: we still do not take intrinsic size into account,
+                //  probably we cannot do so without run-time actions
                 for (var lineNo = 2; lineNo <= linesAmount; lineNo++) {
                     currentLine = gridLines[lineNo - 1];
                     if(currentLine.fractions === true){
