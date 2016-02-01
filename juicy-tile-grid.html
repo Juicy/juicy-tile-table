@@ -422,18 +422,22 @@ version: 1.3.2
                     setGridTracks("column", packedGroup.columnAxes, "widthFlexible", "widthDynamic", packedGroup.width);
                     var tableGrid = getFullTableGrid( packedGroup.rowAxes, packedGroup.columnAxes);
 
-                    var shadowRow, row, shadowTile, tileItem;
+                    var shadowRow, row, column, shadowTile, tileItem;
 
                     // last columnAxes is the end line of the last row
                     for(var columnNo = 1; columnNo <  packedGroup.columnAxes.length; columnNo++){
                         col = document.createElement('col');
+                        column = packedGroup.columnAxes[columnNo];
                         // force inline style
                         // .style does not work with ShadowDOM distribution for some reason
                         // IDEA tomalec: create Chromium issue about isolated problem
-                        col.setAttribute('style', 'width:'+packedGroup.columnAxes[columnNo].size+';' +
-                            'min-width:'+ packedGroup.columnAxes[columnNo].minSize +';' +
-                            // 'max-width:'+ packedGroup.columnAxes[columnNo].maxSize +';');
-                            'width:'+ packedGroup.columnAxes[columnNo].maxSize +';');
+
+                        col.setAttribute('style',
+                            ( column.size ? 'width:'+column.size+';' : '' ) +
+                            ( column.minSize ? 'min-width:'+ column.minSize +';' : '' ) +
+                            // 'max-width:'+ column.maxSize +';');
+                            ( column.maxSize ? 'max-width:'+ column.maxSize +';' : '' )
+                        );
                         table.appendChild(col);
                     }
                     // last rowAxes is the end line of the last row
@@ -525,6 +529,9 @@ version: 1.3.2
                     markGridItems(currentLine.ends, trackType + "End", 1);
                 }
                 var col;
+                var totalFractions = 0;
+                var nonFreeSpace = 0;
+
                 for (var lineNo = 2; lineNo <= linesAmount; lineNo++) {
                     currentLine = gridLines[lineNo - 1];
                     trackSize = currentLine.position - previousLine.position;
@@ -534,11 +541,15 @@ version: 1.3.2
                     if (lineNo == linesAmount && openedTiles.length == 0) {
                         // Last line, if empty, should be flexible
                         // str += trackSize + "fr ";
-                        currentLine.size = (100 * trackSize/containerSize) + "%";
+                        // currentLine.size = (100 * trackSize/containerSize) + "%";
+                        currentLine.fractions = true;
+                        currentLine.maxSize = trackSize;
+                        totalFractions += trackSize;
                         break;
                     } else if (openedGutters.length) {
                         // Gutters should be fixed size
-                        currentLine.size = trackSize + "px ";
+                        currentLine.size = trackSize + "px";
+                        nonFreeSpace += trackSize;
                     } else {
                         //does not contain any gutter
                         switch (countProperty(openedTiles, flexPropertyName)) {
@@ -553,6 +564,7 @@ version: 1.3.2
                                     // all are non-dynamic (fixed)
                                     currentLine.size = trackSize + "px ";
                                 }
+                                nonFreeSpace += trackSize;
                                 break;
                             case openedTiles.length: // all intersected are flexible
                                 // and it contains them
@@ -560,24 +572,29 @@ version: 1.3.2
                                     // str += "minmax( min-content, " + trackSize + "fr ) ";
                                     // str = "minmax( min-content, " + (100 * trackSize/containerSize) + "%)";
                                     currentLine.minSize = 'min-content';
-                                    currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                    // currentLine.maxSize = (100 * trackSize/containerSize) + '%';
                                 } else {
                                     // XXX(tomalec): min-content does not make an effect for spanning items! so we will force min size to fixed size
                                     // str += "minmax( " + trackSize + "px, " + trackSize + "fr ) ";
                                     // str = "minmax( " + trackSize + "px, " + (100 * trackSize/containerSize) + "%)";
                                     currentLine.minSize =  trackSize + 'px';
-                                    currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                    // currentLine.maxSize = (100 * trackSize/containerSize) + '%';
                                 }
+                                currentLine.fractions = true;
+                                currentLine.maxSize = trackSize;
+                                totalFractions += trackSize;
                                 break;
                             default: //mix
                                 // str += "minmax( " + trackSize + "px, " + trackSize + "fr ) ";
                                 // str = "minmax( " + trackSize + "px, " + (100 * trackSize/containerSize) + "%)";
                                 currentLine.minSize =  trackSize + 'px';
-                                currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                // currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                currentLine.fractions = true;
+                                currentLine.maxSize = trackSize;
+                                totalFractions += trackSize;
                                 break;
                         }
                     }
-
 
                     // currentLine.ends.length && arraySubtractAndMark(openedTiles, currentLine.ends, trackType + "End", lineNo);
                     currentLine.ends.length && arraySubtractAndMark(openedTiles, currentLine.ends, trackType + 'End', lineNo);
@@ -589,6 +606,13 @@ version: 1.3.2
                         openedGutters = openedGutters.concat(currentLine.gutter);
                     }
                     previousLine = currentLine;
+                }
+
+                for (var lineNo = 2; lineNo <= linesAmount; lineNo++) {
+                    currentLine = gridLines[lineNo - 1];
+                    if(currentLine.fractions === true){
+                        currentLine.maxSize = 'calc(' + (100 * currentLine.maxSize / totalFractions) + '% - ' + nonFreeSpace + 'px )';
+                    }
                 }
 
                 // now we need to resolve fr
