@@ -10,31 +10,31 @@
     <link rel="import" href="../../../polymer/polymer.html">
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../../juicy-tile-grid.html">
+    <link rel="import" href="../../juicy-tile-table.html">
     <style shim-shadowdom>
     html,body{
       min-width: 0;
       font-size: 10px;
     }
-    juicy-tile-grid{
+    juicy-tile-table{
       position: relative;
     }
-    juicy-tile-grid > *,
+    juicy-tile-table > *,
     /** thi selector is for shimmed ShadowDOM browsers */
-    juicy-tile-grid .juicy-tile > [juicytile]{
+    juicy-tile-table .juicy-tile > [juicytile]{
       background-color: rgba(99,99,99,0.3);
       height: 100%;
       margin: 0;
     }
-    juicy-tile-grid{
+    juicy-tile-table{
       background-color: lightgrey;
     }
-    juicy-tile-grid /deep/ .juicy-tile{
+    juicy-tile-table /deep/ .juicy-tile{
       background-color: lightblue;
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
     }
-    juicy-tile-grid /deep/ .juicy-tile:nth-child(2n){
+    juicy-tile-table /deep/ .juicy-tile:nth-child(2n){
       /*background-color: darkblue;*/
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
@@ -45,27 +45,27 @@
 
     <!-- You can use the document as a place to set up your fixtures. -->
     <template is="dom-bind" id="root">
-      <juicy-tile-grid id="grid0" setup="{{model.setup}}" style="width: 420px;<!--  visibility: hidden; -->"><!-- to 1300-->
+      <juicy-tile-table id="grid0" setup="{{model.setup}}" style="width: 420px;<!--  visibility: hidden; -->"><!-- to 1300-->
         <div>100px x 100px</div>
         <div>200px x 100px <br/>flexible</div>
         <div>100px x 100px <br/>flexible</div>
         <div>100% x 100px <br/>flexible</div>
         <div>50% x 100px <br/>flexible</div>
-      </juicy-tile-grid>
-      <juicy-tile-grid id="grid1" setup="{{model.setup}}" style="width: 420px; <!-- visibility: hidden; -->"><!-- to 1300-->
+      </juicy-tile-table>
+      <juicy-tile-table id="grid1" setup="{{model.setup}}" style="width: 420px; <!-- visibility: hidden; -->"><!-- to 1300-->
         <div>100px x 100px</div>
         <div>200px x 100px <br/>flexible</div>
         <div>100px x 100px <br/>flexible</div>
         <div>100% x 100px <br/>flexible</div>
         <div>50% x 100px <br/>flexible</div>
-      </juicy-tile-grid>
-      <juicy-tile-grid id="grid2" setup="{{model.setup2}}" style="height: 420px; width: 320px<!-- visibility: hidden; -->"><!-- to 1300-->
+      </juicy-tile-table>
+      <juicy-tile-table id="grid2" setup="{{model.setup2}}" style="height: 420px; width: 320px<!-- visibility: hidden; -->"><!-- to 1300-->
         <div>100px x 100px</div>
         <div>200px x 100px <br/>flexible</div>
         <div>100px x 100px <br/>flexible</div>
         <div>100% x 100px <br/>flexible</div>
         <div>50% x 100px <br/>flexible</div>
-      </juicy-tile-grid>
+      </juicy-tile-table>
     </template>
     </template>
     <script>
@@ -171,7 +171,7 @@ function expectSize_hw(element, height, width){
 	return expectSize(element, width, height);
 }
 /**
- * juicy-tile-grid fractions tests
+ * juicy-tile-table fractions tests
  */
 var juicyTileList;
 describe('fractions', function() {

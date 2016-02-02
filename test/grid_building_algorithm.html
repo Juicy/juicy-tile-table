@@ -10,7 +10,7 @@
     <link rel="import" href="../../polymer/polymer.html" />
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../juicy-tile-grid.html">
+    <link rel="import" href="../juicy-tile-table.html">
     <!-- get some test helpers -->
     <script src="helpers/getTracks.js"></script>
 
@@ -19,30 +19,30 @@
       min-width: 0;
       font-size: 10px;
     }
-    juicy-tile-grid{
+    juicy-tile-table{
       position: relative;
     }
-    juicy-tile-grid > *,
+    juicy-tile-table > *,
     /** thi selector is for shimmed ShadowDOM browsers */
-    juicy-tile-grid .juicy-tile > [juicytile]{
+    juicy-tile-table .juicy-tile > [juicytile]{
       background-color: rgba(99,99,99,0.3);
       height: 100%;
       margin: 0;
     }
-    juicy-tile-grid{
+    juicy-tile-table{
       background-color: lightgrey;
     }
-    juicy-tile-grid /deep/ .juicy-tile{
+    juicy-tile-table /deep/ .juicy-tile{
       background-color: lightgreen;
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
     }
-    juicy-tile-grid .fixed{
+    juicy-tile-table .fixed{
       background-color: lightpink;
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
     }
-    juicy-tile-grid /deep/ .juicy-tile:nth-child(2n){
+    juicy-tile-table /deep/ .juicy-tile:nth-child(2n){
       /*background-color: darkblue;*/
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
@@ -53,15 +53,15 @@
 
     <!-- You can use the document as a place to set up your fixtures. -->
     <template is="dom-bind" id="root">
-      <juicy-tile-grid id="gridLines" setup="{{model.gridLines}}" style="width: 500px;">
+      <juicy-tile-table id="gridLines" setup="{{model.gridLines}}" style="width: 500px;">
         <div>100px x 100px</div>
         <div>150px x 100px</div>
         <div>200px x 215px</div>
         <div>260px x 100px</div>
         <div>265px x 50px</div>
         <div>90px x 50px</div>
-      </juicy-tile-grid>
-      <juicy-tile-grid id="fixVSflex_cols" setup="{{model.fixVSflex_cols}}" style="width: 680px;">
+      </juicy-tile-table>
+      <juicy-tile-table id="fixVSflex_cols" setup="{{model.fixVSflex_cols}}" style="width: 680px;">
         <div class="fixed">0 fiX</div>
         <div>1 Flex</div>
         <div class="fixed">2 fiX</div>
@@ -73,8 +73,8 @@
         <div>8 Flex</div>
         <div>9 Flex</div>
         <div>10 Flex</div>
-      </juicy-tile-grid>
-      <juicy-tile-grid id="fixVSflex_rows" setup="{{model.fixVSflex_rows}}" style="height: 680px; width: 50px;">
+      </juicy-tile-table>
+      <juicy-tile-table id="fixVSflex_rows" setup="{{model.fixVSflex_rows}}" style="height: 680px; width: 50px;">
         <div class="fixed">0 fiX</div>
         <div>1 Flex</div>
         <div class="fixed">2 fiX</div>
@@ -86,7 +86,7 @@
         <div>8 Flex</div>
         <div>9 Flex</div>
         <div>10 Flex</div>
-      </juicy-tile-grid>
+      </juicy-tile-table>
     </template>
     <script>
 var templ = document.getElementById('root');
@@ -299,7 +299,7 @@ var model = {
 document.querySelector("template").model = model;
 
 /**
- * juicy-tile-grid fractions tests
+ * juicy-tile-table fractions tests
  */
 describe('when parsed to CSS Grid', function() {
   var juicyTileList_gridLines, juicyTileList_fixVSflex_cols, columns;

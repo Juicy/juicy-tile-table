@@ -2,24 +2,24 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>&lt;juicy-tile-grid&gt; with groups</title>
+    <title>&lt;juicy-tile-table&gt; with groups</title>
 
     <!-- Importing Web Component's Polyfill -->
     <script src="../../webcomponentsjs/webcomponents.js"></script>
     <!-- Importing Custom Elements -->
-    <link rel="import" href="../juicy-tile-grid.html">
+    <link rel="import" href="../juicy-tile-table.html">
 
     <link rel="stylesheet" href="github-markdown.css">
     <link rel="stylesheet" href="examples.css">
 </head>
 <body>
-    <a href="https://github.com/Juicy/juicy-tile-grid"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/Juicy/juicy-tile-table"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <article class="markdown-body">
-        <h1>&lt;juicy-tile-grid&gt;</h1>
+        <h1>&lt;juicy-tile-table&gt;</h1>
         <blockquote><p>Masonry-like Custom Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS only).</p></blockquote>
 
         <!-- EXAMPLE STARTS HERE -->
-        <juicy-tile-grid refreshonresize setup ='{
+        <juicy-tile-table refreshonresize setup ='{
             "gutter": 24,
             "items": [{
                 "id": 2,
@@ -73,11 +73,11 @@
             </div>
             <section>Item3, 4x1, priority 0.6</section>
             <div title="0.8x0.2, priority 0, nested twice">Item 4..</div>
-        </juicy-tile-grid>
+        </juicy-tile-table>
         <!-- EXAMPLE ENDS HERE -->
         <script>
-            var setup = document.querySelector('juicy-tile-grid').setup;
-            console.log('for this demo purposes juicy-tile-grid setup is exposed under `setup` variable', setup);
+            var setup = document.querySelector('juicy-tile-table').setup;
+            console.log('for this demo purposes juicy-tile-table setup is exposed under `setup` variable', setup);
         </script>
     </article>
 </body>

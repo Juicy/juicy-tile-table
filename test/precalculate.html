@@ -9,14 +9,14 @@
     <script src="../../web-component-tester/browser.js"></script>
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../juicy-tile-grid.html">
+    <link rel="import" href="../juicy-tile-table.html">
     <style shim-shadowdom>
-      juicy-tile-grid{
+      juicy-tile-table{
         position: relative;
       }
-      juicy-tile-grid > *,
+      juicy-tile-table > *,
       /** thi selector is for shimmed ShadowDOM browsers */
-      juicy-tile-grid .juicy-tile > [juicytile]{
+      juicy-tile-table .juicy-tile > [juicytile]{
         background-color: lightgray;
         width: 100%;
         height: 100%;
@@ -26,7 +26,7 @@
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
-    <juicy-tile-grid id="list1" style="width:300px; height:300px;" setup='{
+    <juicy-tile-table id="list1" style="width:300px; height:300px;" setup='{
       "width": 300,
       "height": 300,
       "items":[
@@ -98,7 +98,7 @@
         <div>
           <div style="height:50px; width: 250px;">tightgroup: 2 - <code>height:50px; width: 250px;</code></div>
         </div>
-    </juicy-tile-grid>
+    </juicy-tile-table>
 
     <script>
 

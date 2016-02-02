@@ -9,14 +9,14 @@
     <script src="../../web-component-tester/browser.js"></script>
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../juicy-tile-grid.html">
+    <link rel="import" href="../juicy-tile-table.html">
     <style shim-shadowdom>
-      juicy-tile-grid{
+      juicy-tile-table{
         position: relative;
       }
-      juicy-tile-grid > *,
+      juicy-tile-table > *,
       /** thi selector is for shimmed ShadowDOM browsers */
-      juicy-tile-grid .juicy-tile > [juicytile]{
+      juicy-tile-table .juicy-tile > [juicytile]{
         background-color: lightgray;
         width: 100%;
         height: 100%;
@@ -26,13 +26,13 @@
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
-    <juicy-tile-grid id="list1">
+    <juicy-tile-table id="list1">
       <div>0</div>
       <div>1</div>
       <div>2</div>
       <div>3</div>
       <div>4</div>
-    </juicy-tile-grid>
+    </juicy-tile-table>
 
     <script>
     // X: top, bottom, height
@@ -46,7 +46,7 @@ var orientations = [
  * JuicyTiles tests
  */
 var juicyTileList = document.getElementById('list1');
-describe('juicy-tile-grid', function() {
+describe('juicy-tile-table', function() {
   ["horizontal", "vertical"].forEach(function(direction){
       context('when in ``' + direction +
           '` direction`', function () {

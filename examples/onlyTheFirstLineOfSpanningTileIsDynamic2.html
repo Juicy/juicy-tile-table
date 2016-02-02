@@ -2,12 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>&lt;juicy-tile-grid&gt;</title>
+    <title>&lt;juicy-tile-table&gt;</title>
 
     <!-- Importing Web Component's Polyfill -->
     <script src="../../webcomponentsjs/webcomponents.js"></script>
     <!-- Importing Custom Elements -->
-    <link rel="import" href="../juicy-tile-grid.html">
+    <link rel="import" href="../juicy-tile-table.html">
 
     <!-- Importing Polymer for demos -->
     <link rel="import" href="../../polymer/polymer.html" />
@@ -35,14 +35,14 @@ body {
     grid-template-columns: auto minmax(15em, 1fr)  min-content;
     overflow: visible;
 }
-juicy-tile-grid{
+juicy-tile-table{
     /*width: 300px;
     height: 150px;*/
     width: calc( 160px * 3 + 15px * 2 + 25px * 2 );
     padding: 15px;
     box-shadow:     inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
 }
-juicy-tile-grid>*{
+juicy-tile-table>*{
     box-shadow:     0px 0px 10px 0px rgba(50, 50, 50, 0.75);
     text-align: center;
     border-radius: 2px;
@@ -61,15 +61,15 @@ juicy-jsoneditor{
 </style>
 
 <body>
-<a href="https://github.com/Juicy/juicy-tile-grid"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<a href="https://github.com/Juicy/juicy-tile-table"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 <article class="markdown-body">
-    <h1>&lt;juicy-tile-grid&gt;</h1>
+    <h1>&lt;juicy-tile-table&gt;</h1>
     <blockquote><p>Masonry-like Polymer Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS only), and adapts it to CSS Grid Layout.</p></blockquote>
 
 </article>
 <section class="playground markdown-body">
     <template is="dom-bind">
-        <juicy-tile-grid refreshonresize setup="{{setup}}">
+        <juicy-tile-table refreshonresize setup="{{setup}}">
             <div>0</div>
             <div>
                 <button>1</button>
@@ -99,9 +99,9 @@ juicy-jsoneditor{
             <div>9</div>
             <div>10</div>
             <div>11</div> -->
-        </juicy-tile-grid>
-        <juicy-jsoneditor json="{{setup}}" name="juicy-tile-grid.setup" modes="['text','tree','form']" mode="text"></juicy-jsoneditor>
-        <button onclick="javascript: document.querySelector('juicy-tile-grid').refresh();">Re-pack grid</button>
+        </juicy-tile-table>
+        <juicy-jsoneditor json="{{setup}}" name="juicy-tile-table.setup" modes="['text','tree','form']" mode="text"></juicy-jsoneditor>
+        <button onclick="javascript: document.querySelector('juicy-tile-table').refresh();">Re-pack grid</button>
     </template>
     <script type="text/javascript">
         model = {
@@ -161,7 +161,7 @@ juicy-jsoneditor{
 </section>
 <article class="markdown-body">
 <!--     <section>
-        <h3><a href="https://github.com/Juicy/juicy-tile-grid#juicy-tile-grid-">API</a></h3>
+        <h3><a href="https://github.com/Juicy/juicy-tile-table#juicy-tile-table-">API</a></h3>
         <ul>
             <li><code>juicytilelist.resizeItem</code>(<input placeholder="itemIndex">, <input placeholder="width">, <input placeholder="height">) <button id="callResize">call</button></li>
 
@@ -177,22 +177,22 @@ juicy-jsoneditor{
                 element.refresh();
             }
             document.getElementById("callResize").addEventListener("click", function (event){
-                callMethod( document.querySelector("juicy-tile-grid"), "resizeItem", event );
+                callMethod( document.querySelector("juicy-tile-table"), "resizeItem", event );
             });
             document.getElementById("callReprioritize").addEventListener("click", function (event){
-                callMethod( document.querySelector("juicy-tile-grid"), "reprioritizeItem", event );
+                callMethod( document.querySelector("juicy-tile-table"), "reprioritizeItem", event );
             });
         });
         addMore = function( button ){
             // var newOne = button.ownerDocument.createElement("div");
-            // newOne.innerHTML = "<p><code>&lt;juicy-tile-grid&gt;</code> uses native CSS Grid to adapt to changes</p>";
+            // newOne.innerHTML = "<p><code>&lt;juicy-tile-table&gt;</code> uses native CSS Grid to adapt to changes</p>";
             // button.parentNode.appendChild( newOne );
             // With !<3 to IE
             document.getElementById("ieHierarchyRequestErrorWorkaround").innerHTML +=
-                "<p><code>&lt;juicy-tile-grid&gt;</code> uses native CSS Grid to adapt to changes</p>";
+                "<p><code>&lt;juicy-tile-table&gt;</code> uses native CSS Grid to adapt to changes</p>";
         };
         refresh = function( button ){
-            document.querySelector("juicy-tile-grid").refresh();
+            document.querySelector("juicy-tile-table").refresh();
         };
         </script>
     </section> -->

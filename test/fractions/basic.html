@@ -10,30 +10,30 @@
     <link rel="import" href="../../../polymer/polymer.html">
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../../juicy-tile-grid.html">
+    <link rel="import" href="../../juicy-tile-table.html">
     <style shim-shadowdom>
     html,body{
       min-width: 0;
     }
-    juicy-tile-grid{
+    juicy-tile-table{
       position: relative;
     }
-    juicy-tile-grid > *,
+    juicy-tile-table > *,
     /** thi selector is for shimmed ShadowDOM browsers */
-    juicy-tile-grid .juicy-tile > [juicytile]{
+    juicy-tile-table .juicy-tile > [juicytile]{
       background-color: rgba(99,99,99,0.3);
       height: 100%;
       margin: 0;
     }
-    juicy-tile-grid{
+    juicy-tile-table{
       background-color: lightgrey;
     }
-    juicy-tile-grid /deep/ .juicy-tile{
+    juicy-tile-table /deep/ .juicy-tile{
       background-color: lightblue;
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
     }
-    juicy-tile-grid /deep/ .juicy-tile:nth-child(2){
+    juicy-tile-table /deep/ .juicy-tile:nth-child(2){
       background-color: lightpink;
       /*border: 1px solid black;*/
       /*box-sizing: border-box;*/
@@ -44,16 +44,16 @@
 
     <!-- You can use the document as a place to set up your fixtures. -->
     <template is="dom-bind" id="root">
-      <juicy-tile-grid id="grid1" setup="{{model.setup}}" style="width: 800px;"><!-- to 1300-->
+      <juicy-tile-table id="grid1" setup="{{model.setup}}" style="width: 800px;"><!-- to 1300-->
         <div>0 - 200 x 100</div>
         <div>1 - 200 x 100 - flex</div>
         <div>2 - 400 x 200 - flex</div>
-      </juicy-tile-grid>
-      <juicy-tile-grid id="grid2" setup="{{model.setup2}}" style="width: 200px; height:400px"><!-- to 1300-->
+      </juicy-tile-table>
+      <juicy-tile-table id="grid2" setup="{{model.setup2}}" style="width: 200px; height:400px"><!-- to 1300-->
         <div>0</div>
         <div>1</div>
         <div>3</div>
-      </juicy-tile-grid>
+      </juicy-tile-table>
     </template>
     <script>
 var templ = document.getElementById('root');
@@ -122,7 +122,7 @@ function expectSize(element, width, height){
   expect( element.offsetHeight).to.equal(height);
 }
 /**
- * juicy-tile-grid fractions tests
+ * juicy-tile-table fractions tests
  */
 var juicyTileList;
 describe('fractions', function() {

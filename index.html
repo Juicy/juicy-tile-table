@@ -4,14 +4,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>&lt;juicy-tile-grid&gt;</title>
+    <title>&lt;juicy-tile-table&gt;</title>
 
     <!-- Importing Web Component's Polyfill -->
     <script src="../webcomponentsjs/webcomponents.js"></script>
 
 
     <!-- Importing Custom Elements -->
-    <link rel="import" href="juicy-tile-grid.html">
+    <link rel="import" href="juicy-tile-table.html">
 
 
     <!-- Importing Polymer for demos -->
@@ -29,38 +29,22 @@
         juicy-jsoneditor {
             height: 15em;
         }
-
-        .feature-detection {
-            box-shadow: 0px 0px 10px 0px rgba(255, 0, 0, 0.75);
-            margin: 10px;
-            padding: 1em;
-        }
-
-        @supports( (display: grid) or (display: -ms-grid)) {
-            .feature-detection {
-                display: none;
-            }
-        }
     </style>
 </head>
 
 <body>
-    <a href="https://github.com/Juicy/juicy-tile-grid">
+    <a href="https://github.com/Juicy/juicy-tile-table">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
     </a>
     <article class="markdown-body">
-        <h1>&lt;juicy-tile-grid&gt;</h1>
-        <div class="feature-detection">
-            We use <a href="http://www.w3.org/TR/css3-grid-layout/">CSS3 Grid Layout</a>. Unfortunately, it is <a href="http://caniuse.com/#search=css%20grid">not widely supported</a>. In Chrome you can enable it through the "experimental Web Platform
-            features" flag in
-            <code>chrome://flags</code> In IE we use it with
-            <code>-ms</code> prefix, which implements pretty old spec, but works. For other browsers, you need to use polyfill.
-        </div>
+        <h1>&lt;juicy-tile-table&gt;</h1>
         <blockquote>
-            <p>Masonry-like Custom Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS only), and adapts it to CSS Grid Layout.</p>
+            <p>
+                Masonry-like Custom Element with <code>&lt;table&gt;</code> renderer that mimics CSS Grid Layout of [`juicy-tile-grid`](Juicy/juicy-tile-grid).
+            </p>
         </blockquote>
         <template is="dom-bind">
-            <juicy-tile-grid  refreshonresize
+            <juicy-tile-table refreshonresize
                 setup='{
                     "gutter":8,
                     "items":[{
@@ -156,12 +140,12 @@
                 <div>9</div>
                 <div>10</div>
                 <div>11</div>
-            </juicy-tile-grid>
-            <!-- <juicy-jsoneditor json="{{setup}}" name="juicy-tile-grid.setup" modes="['text','tree','form']"></juicy-jsoneditor> -->
-            <button onclick="javascript: document.querySelector('juicy-tile-grid').refresh();">Refresh grid</button>
+            </juicy-tile-table>
+            <!-- <juicy-jsoneditor json="{{setup}}" name="juicy-tile-table.setup" modes="['text','tree','form']"></juicy-jsoneditor> -->
+            <button onclick="javascript: document.querySelector('juicy-tile-table').refresh();">Refresh grid</button>
         <script type="text/javascript">
-            var setup = document.querySelector('juicy-tile-grid').setup;
-            console.log('for this demo purposes juicy-tile-grid setup is exposed under `setup` variable', setup);
+            var setup = document.querySelector('juicy-tile-table').setup;
+            console.log('for this demo purposes juicy-tile-table setup is exposed under `setup` variable', setup);
         </script>
 
         <section>
@@ -175,7 +159,7 @@
                 <li>auto adjusting container sizes,</li>
                 <li>gutter/cell-spacing between tiles,</li>
                 <li>adapting to window size changes,</li>
-                <li>CSS Grid Layout,</li>
+                <li>widely supported table layout, that mimics CSS Grid,</li>
                 <li>adapting to dynamic changes of tile's content, without need to repack.</li>
             </ul>
         </section>

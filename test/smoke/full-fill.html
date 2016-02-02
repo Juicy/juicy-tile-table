@@ -11,27 +11,27 @@
     <link rel="import" href="../../../polymer/polymer.html">
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../../juicy-tile-grid.html">
+    <link rel="import" href="../../juicy-tile-table.html">
     <style shim-shadowdom>
         html,
         body {
             min-width: 0;
         }
 
-        juicy-tile-grid {
+        juicy-tile-table {
             position: relative;
             background-color: lightgrey;
         }
 
-        juicy-tile-grid > *,
+        juicy-tile-table > *,
         /** thi selector is for shimmed ShadowDOM browsers */
-        juicy-tile-grid .juicy-tile > [juicytile]{
+        juicy-tile-table .juicy-tile > [juicytile]{
             background-color: rgba(99, 99, 99, 0.3);
             height: 100%;
             margin: 0;
         }
 
-        juicy-tile-grid /deep/ .juicy-tile {
+        juicy-tile-table /deep/ .juicy-tile {
             background-color: lightblue;
         }
     </style>
@@ -41,12 +41,12 @@
 
     <!-- You can use the document as a place to set up your fixtures. -->
     <template is="dom-bind" id="root">
-        <juicy-tile-grid id="fullfill_number" setup="{{model.fullfill_number}}" style="width: 200px; height: 200px;">
+        <juicy-tile-table id="fullfill_number" setup="{{model.fullfill_number}}" style="width: 200px; height: 200px;">
             <div>0 - 300 x 300</div>
-        </juicy-tile-grid>
-        <juicy-tile-grid id="fullfill_percent" setup="{{model.fullfill_percent}}" style="width: 200px; height: 200px;">
+        </juicy-tile-table>
+        <juicy-tile-table id="fullfill_percent" setup="{{model.fullfill_percent}}" style="width: 200px; height: 200px;">
             <div>0 - 300 x 300</div>
-        </juicy-tile-grid>
+        </juicy-tile-table>
     </template>
     <script>
         var templ = document.getElementById('root');
@@ -90,7 +90,7 @@
         }
 
         /**
-         * juicy-tile-grid fractions tests
+         * juicy-tile-table fractions tests
          */
         var juicyTileList;
         describe('when item is configured to fill entire grid', function() {

@@ -1,4 +1,4 @@
-# &lt;juicy-tile-grid&gt;
+# &lt;juicy-tile-table&gt;
 
 > Masonry-like Custom Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS and ShadowDOM only), and adapts it to `<table>` that mimic CSS Grid Layout.
 > So you will get (bin-packed) gap-less layout, with responsive, and adaptive features, handled natively by browser.
@@ -16,7 +16,7 @@
 [Check it live!](http://Juicy.github.io/juicy-tile-table)
 
 ### Rationale
-As CSS Grid Layout is not yet widely supported across major browsers, without a need to set custom flags, and we would like to use all the features of [`<juicy-tile-grid>`](https://github.com/Juicy/juicy-tile-list) on production, we have fallback to widely supported, good old `<table>`.
+As CSS Grid Layout is not yet widely supported across major browsers, without a need to set custom flags, and we would like to use all the features of [`<juicy-tile-grid>`](https://github.com/Juicy/juicy-tile-grid) on production, we have fallback to widely supported, good old `<table>`.
 This custom element is layer on top of [`<juicy-tile-list>`](https://github.com/Juicy/juicy-tile-list) that renders packed items using specifically created `<table>`, so it leverages native way to handle tiles' overflow and container re-sizes, and should work in any browser.
 
 ## Install
@@ -31,7 +31,7 @@ Or [download as ZIP](https://github.com/Juicy/juicy-tile-table/archive/gh-pages.
 
 ## Usage
 
-1. Import Web Components' polyfill:
+1. Import Web Components' polyfill, if needed:
 
     ```html
     <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
@@ -40,13 +40,13 @@ Or [download as ZIP](https://github.com/Juicy/juicy-tile-table/archive/gh-pages.
 2. Import Custom Element:
 
     ```html
-    <link rel="import" href="bower_components/juicy-tile-table/juicy-tile-grid.html">
+    <link rel="import" href="bower_components/juicy-tile-table/juicy-tile-table.html">
     ```
 
 3. Start using it!
 
     ```html
-    <juicy-tile-grid></juicy-tile-grid>
+    <juicy-tile-table></juicy-tile-table>
     ```
 
 ## Requirements

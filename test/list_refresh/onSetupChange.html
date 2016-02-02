@@ -9,7 +9,7 @@
     <script src="../../../web-component-tester/browser.js"></script>
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../../juicy-tile-grid.html">
+    <link rel="import" href="../../juicy-tile-table.html">
 </head>
 
 <body>
@@ -17,18 +17,18 @@
     <!-- You can use the document as a place to set up your fixtures. -->
     <test-fixture id="no-setup">
         <template>
-            <juicy-tile-grid>
+            <juicy-tile-table>
                 <div>0</div>
                 <span>1</span>
-            </juicy-tile-grid>
+            </juicy-tile-table>
         </template>
     </test-fixture>
     <test-fixture id="inline-setup">
         <template>
-            <juicy-tile-grid setup='{"items":[{"id":0, "priority": 0.9, "width": 50, "height": 50},{"id":1, "priority": 0.7, "width": 50, "height": 50}]}'>
+            <juicy-tile-table setup='{"items":[{"id":0, "priority": 0.9, "width": 50, "height": 50},{"id":1, "priority": 0.7, "width": 50, "height": 50}]}'>
                 <div>0</div>
                 <span>1</span>
-            </juicy-tile-grid>
+            </juicy-tile-table>
         </template>
     </test-fixture>
 
@@ -58,7 +58,7 @@
                 context('before element was attached', function() {
 
                     beforeEach(function() {
-                        noSetup = document.createElement('juicy-tile-grid');
+                        noSetup = document.createElement('juicy-tile-table');
                         noSetup_refresh = sinon.spy(noSetup, "refresh");
                     });
                     afterEach(function() {
@@ -171,7 +171,7 @@
                 context('before element was attached', function() {
 
                     beforeEach(function() {
-                        noSetup = document.createElement('juicy-tile-grid');
+                        noSetup = document.createElement('juicy-tile-table');
                         noSetup_refresh = sinon.spy(noSetup, "refresh");
                     });
                     afterEach(function() {

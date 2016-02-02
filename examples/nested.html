@@ -2,19 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>&lt;juicy-tile-grid&gt; nested</title>
+    <title>&lt;juicy-tile-table&gt; nested</title>
 
     <!-- Importing Web Component's Polyfill -->
     <script src="../../webcomponentsjs/webcomponents.js"></script>
     <!-- Importing Custom Elements -->
-    <link rel="import" href="../juicy-tile-grid.html">
+    <link rel="import" href="../juicy-tile-table.html">
     <style>
         * {
             margin: 0px;
             padding: 0px;
         }
 
-        body > juicy-tile-grid {
+        body > juicy-tile-table {
             /*width: 300px;
             height: 150px;*/
             width: 616px;
@@ -22,29 +22,29 @@
             box-shadow: inset 0px 0px 10px 0px rgba(50, 50, 50, 0.6);
         }
         /* Workaround simple bleeding shimmed ShadowDOM */
-        /*juicy-tile-grid >*{*/
-        juicy-tile-grid >*:not(.juicy-tile-table),
-        juicy-tile-grid .juicy-tile{
+        /*juicy-tile-table >*{*/
+        juicy-tile-table >*:not(.juicy-tile-table),
+        juicy-tile-table .juicy-tile{
             box-shadow: inset 0px 0px 10px 0px rgba(50, 50, 50, 0.75);
             height: 100%;
         }
 
-        juicy-tile-grid > :nth-child(3) {
+        juicy-tile-table > :nth-child(3) {
             overflow: auto;
         }
 
-        juicy-tile-grid > :nth-child(4) {
+        juicy-tile-table > :nth-child(4) {
             overflow: auto;
         }
 
-        juicy-tile-grid > :nth-child(5) {
+        juicy-tile-table > :nth-child(5) {
             max-height: 100px;
             overflow: auto;
         }
     </style>
 </head>
 <body>
-    <juicy-tile-grid refreshonresize id="parent-grid" setup='{
+    <juicy-tile-table refreshonresize id="parent-grid" setup='{
         "gutter": 8,
         "items": [{
             "id": 0,
@@ -69,7 +69,7 @@
         }]
     }'>
         <div>Item 0</div>
-        <juicy-tile-grid refreshonresize id="child-grid" setup='{
+        <juicy-tile-table refreshonresize id="child-grid" setup='{
             "gutter": 4,
             "items": [{
                 "id": 0,
@@ -101,16 +101,16 @@
                 <input value="Input 2">
             </div>
             <section>Item 3</section>
-        </juicy-tile-grid>
+        </juicy-tile-table>
         <div>
             <input value="Input 2">
         </div>
         <section>Item 3</section>
-    </juicy-tile-grid>
+    </juicy-tile-table>
     <script>
         var setup = document.querySelector('#parent-grid').setup;
         var nested_setup = document.querySelector('#child-grid').setup;
-        console.log('for this demo purposes juicy-tile-grid setup is exposed under `setup` and `nested_setup` variable', setup, nested_setup);
+        console.log('for this demo purposes juicy-tile-table setup is exposed under `setup` and `nested_setup` variable', setup, nested_setup);
     </script>
     <footer>
         <h4>Other examples</h4>
