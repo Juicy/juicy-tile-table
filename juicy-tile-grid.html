@@ -565,7 +565,7 @@ version: 1.3.2
                                     // str += "minmax( min-content, " + trackSize + "fr ) ";
                                     // str = "minmax( min-content, " + (100 * trackSize/containerSize) + "%)";
                                     currentLine.minSize = 'min-content';
-                                    currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                    currentLine.size = (100 * trackSize/containerSize) + '%';
                                 } else {
                                     // XXX(tomalec): min-content does not make an effect for spanning items! so we will force min size to fixed size
                                     // str += "minmax( " + trackSize + "px, " + trackSize + "fr ) ";

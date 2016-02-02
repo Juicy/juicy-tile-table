@@ -1,12 +1,8 @@
-function getGridCols(element) {
+function getGridCols(element, propertyName) {
     // check W3C and IE convention
-    return (element.style["gridTemplateColumns"] || element.style["grid-template-columns"])
-                // .split(" ")
-                .match(/[a-z0-9]+(\([^\)]*\))?/g);
+    return Array.prototype.map.call(element.shadowRoot.querySelectorAll('table>col'), function(e){ return e.style[propertyName || 'width']});
 }
-function getGridRows(element, width, height){
+function getGridRows(element, propertyName){
     // check W3C and IE convention
-    return (element.style["gridTemplateRows"] || element.style["grid-template-rows"])
-                // .split(" ")
-                .match(/[a-z0-9]+(\([^\)]*\))?/g);
+    return Array.prototype.map.call(element.shadowRoot.querySelectorAll('table>tr'), function(e){ return e.style[propertyName || 'height']});
 }
