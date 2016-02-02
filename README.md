@@ -9,6 +9,7 @@
 
 [`juicy-tile-list` features](https://github.com/Juicy/juicy-tile-list#features), plus
  - `<table>` that mimics CSS Grid Layout,
+ - awesome mix of fresh Web Components with lovely table layout from 90s :heart:,
  - adapting to dynamic changes of the element, parent container, and tile's content, without need to repack.
 
 ## Demo
