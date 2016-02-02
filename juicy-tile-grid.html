@@ -529,8 +529,6 @@ version: 1.3.2
                     markGridItems(currentLine.ends, trackType + "End", 1);
                 }
                 var col;
-                var totalFractions = 0;
-                var nonFreeSpace = 0;
 
                 for (var lineNo = 2; lineNo <= linesAmount; lineNo++) {
                     currentLine = gridLines[lineNo - 1];
@@ -541,15 +539,11 @@ version: 1.3.2
                     if (lineNo == linesAmount && openedTiles.length == 0) {
                         // Last line, if empty, should be flexible
                         // str += trackSize + "fr ";
-                        // currentLine.size = (100 * trackSize/containerSize) + "%";
-                        currentLine.fractions = true;
-                        currentLine.maxSize = trackSize;
-                        totalFractions += trackSize;
+                        currentLine.size = (100 * trackSize/containerSize) + "%";
                         break;
                     } else if (openedGutters.length) {
                         // Gutters should be fixed size
                         currentLine.size = trackSize + "px";
-                        nonFreeSpace += trackSize;
                     } else {
                         //does not contain any gutter
                         switch (countProperty(openedTiles, flexPropertyName)) {
@@ -564,7 +558,6 @@ version: 1.3.2
                                     // all are non-dynamic (fixed)
                                     currentLine.size = trackSize + "px ";
                                 }
-                                nonFreeSpace += trackSize;
                                 break;
                             case openedTiles.length: // all intersected are flexible
                                 // and it contains them
@@ -572,26 +565,18 @@ version: 1.3.2
                                     // str += "minmax( min-content, " + trackSize + "fr ) ";
                                     // str = "minmax( min-content, " + (100 * trackSize/containerSize) + "%)";
                                     currentLine.minSize = 'min-content';
-                                    // currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                    currentLine.maxSize = (100 * trackSize/containerSize) + '%';
                                 } else {
                                     // XXX(tomalec): min-content does not make an effect for spanning items! so we will force min size to fixed size
                                     // str += "minmax( " + trackSize + "px, " + trackSize + "fr ) ";
-                                    // str = "minmax( " + trackSize + "px, " + (100 * trackSize/containerSize) + "%)";
-                                    currentLine.minSize =  trackSize + 'px';
-                                    // currentLine.maxSize = (100 * trackSize/containerSize) + '%';
+                                    // min-size in px is somehow secured by containers min-size
+                                    currentLine.size = (100 * trackSize/containerSize) + '%';
                                 }
-                                currentLine.fractions = true;
-                                currentLine.maxSize = trackSize;
-                                totalFractions += trackSize;
                                 break;
                             default: //mix
                                 // str += "minmax( " + trackSize + "px, " + trackSize + "fr ) ";
-                                // str = "minmax( " + trackSize + "px, " + (100 * trackSize/containerSize) + "%)";
-                                currentLine.minSize =  trackSize + 'px';
-                                // currentLine.maxSize = (100 * trackSize/containerSize) + '%';
-                                currentLine.fractions = true;
-                                currentLine.maxSize = trackSize;
-                                totalFractions += trackSize;
+                                // min-size in px is somehow secured by containers min-size
+                                currentLine.size = (100 * trackSize/containerSize) + '%';
                                 break;
                         }
                     }
@@ -608,20 +593,11 @@ version: 1.3.2
                     previousLine = currentLine;
                 }
 
-                // Use calc to mimic fractions and grid sizing algorithm
-                // https://www.w3.org/TR/css-grid-1/#layout-algorithm
-                // XXX tomalec: we still do not take intrinsic size into account,
-                //  probably we cannot do so without run-time actions
-                for (var lineNo = 2; lineNo <= linesAmount; lineNo++) {
-                    currentLine = gridLines[lineNo - 1];
-                    if(currentLine.fractions === true){
-                        currentLine.maxSize = 'calc(' + (100 * currentLine.maxSize / totalFractions) + '% - ' + nonFreeSpace + 'px )';
-                    }
-                }
-
                 // now we need to resolve fr
                 // https://www.w3.org/TR/css-grid-1/#algo-find-fr-size
                 // or mimic https://www.w3.org/TR/css-grid-1/#algo-overview otherwise
+                // calc will not help, as it is not supported for table
+                // https://github.com/Juicy/juicy-tile-table/issues/1
                 return;
             }
 
@@ -629,9 +605,6 @@ version: 1.3.2
                 // root group is always a tight group
                 // (have independent grid lines from its parent)
                 packedTree.tightGroup = true;
-
-// debugger
-
 
                 function drawGridLinesFromTree(node, offsetX, offsetY, columnAxes, rowAxes) {
                     if (node.tightGroup) {
