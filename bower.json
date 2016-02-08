@@ -18,7 +18,9 @@
     "bower_components",
     "examples",
     "preview.png",
-    "test"
+    "test",
+    "wct.conf.json",
+    "Gruntfile.js"
   ],
   "dependencies": {
     "juicy-tile-list": ">=0.3.0"
