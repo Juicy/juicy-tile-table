@@ -281,6 +281,8 @@ version: 0.0.1
                     createTileWrapper(id, tiles);
                     tile = tiles[id];
                 }
+                // Add reference to Light DOM element to make it easier for setup checking
+                tile.element = child;
                 // make it work with good old indexes as well
                 tiles[regularTileIndex] = tile;
                 //if (elem.setAttribute) {
@@ -439,7 +441,7 @@ version: 0.0.1
                             ( column.maxSize ? 'max-width:'+ column.maxSize +';' : '' )
                         );
                         table.appendChild(col);
-                    }
+                }
                     // last rowAxes is the end line of the last row
                     for(var rowNo = 0; rowNo <  tableGrid.length; rowNo++){
                         row = tableGrid[rowNo];
@@ -469,34 +471,34 @@ version: 0.0.1
                                         shadowTile.appendChild(
                                             applyStyles(tiles, tileItem, hidden)
                                         );
-                                    }
+                    }
 
                                     var elementStyle = shadowTile.firstChild.style;
                                     elementStyle.width = tileItem.widthFlexible || tileItem.widthDynamic ? "100%" : tileItem.width + "px";
                                     // elementStyle.height = ( tileItem.height /*+ 2 * oversize*/ ) + "px";
                                     elementStyle.height = tileItem.heightFlexible? '100%' : tileItem.heightDynamic ? 'min-content' : tileItem.height + "px";
 
-                                    if (hidden) {
-                                        elementStyle.display = "none";
-                                    } else {
+                    if (hidden) {
+                        elementStyle.display = "none";
+                    } else {
                                         var oversize = tileItem.oversize || 0;
 
                                         if (tileItem.background !== undefined) {
                                             elementStyle.backgroundColor = tileItem.background || "transparent";
-                                        }
+                        }
                                         elementStyle.outline = tileItem.outline || "";
 
-                                        if (oversize) {
-                                            elementStyle.padding = oversize + "px";
-                                            elementStyle.margin = "-" + oversize + "px";
-                                        }
-                                    }
+                        if (oversize) {
+                            elementStyle.padding = oversize + "px";
+                            elementStyle.margin = "-" + oversize + "px";
+                        }
+                    }
 
                                     shadowRow.appendChild(shadowTile);
 
-                                }
-                            }
-                        }
+                    }
+                }
+            }
 
                         table.appendChild(shadowRow);
                     }

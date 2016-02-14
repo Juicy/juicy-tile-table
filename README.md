@@ -49,7 +49,7 @@ Or [download as ZIP](https://github.com/Juicy/juicy-tile-table/archive/gh-pages.
     ```html
     <juicy-tile-table></juicy-tile-table>
     ```
-
+    
 ## Requirements
 This is custom element and it uses ShadowDOM, so if your environment does not support it, you may use [webcomponents/webcomponentsjs](https://github.com/webcomponents/webcomponentsjs) polyfill.
 
