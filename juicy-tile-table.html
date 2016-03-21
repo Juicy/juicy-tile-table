@@ -786,6 +786,21 @@ version: 0.0.4
           return map;
         };
 
+
+        /**
+         * Overwrite juicy-tile-list method as `-table` does not necesarily make shadow Element for loose groups
+         * @param  {Item} what        Reference to the container to delete.
+         * @param  {Boolean} [noRepacking=false]  `true` to prevent  re-packing after setup change.
+         * @return {Object}             deleted item
+         */
+        proto.deleteContainer = function (what, noRepacking) {
+            var deletedItem = Package.prototype.deleteContainer.call(this, what, noRepacking);
+            var deletedElement = this.tiles[deletedItem.id];
+            // var deletedElement = this.getTile(deletedItem.id);
+            deletedElement && deletedElement.parentNode.removeChild(deletedElement);
+            return deletedItem;
+        };
+
         window.JuicyTileGrid = document.registerElement("juicy-tile-table", {
             prototype: JuicyTileGridPrototype
         });
