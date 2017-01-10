@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "polymer": "*",
-    "juicy-jsoneditor": "#gh-pages"
+    "juicy-jsoneditor": "#master"
   },
   "authors": [
     "Tomek Wytrebowicz <tomalecpub@gmail.com>"
