@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 `juicy-tile-table` is a Custom Element with <table> renderer that mimics CSS Grid Layout of [`juicy-tile-grid`](Juicy/juicy-tile-grid).
 
 @element juicy-tile-table
@@ -11,7 +11,7 @@ version: 0.0.7
 <!-- Workaround for IE that does not support <td>s in template (outside of tr),
     we will create td manually later -->
 <template id="juicy-tile">
-    <div class="juicy-tile"><content></content></div>
+    <div class="juicy-tile"><slot></slot></div>
 </template>
 <!-- <template id="juicy-tile">
     <td><div class="juicy-tile"><content></content></div></td>
@@ -86,7 +86,7 @@ version: 0.0.7
             z-index: initial;
         }
     </style>
-    <content select="script,style,template" class="not-a-tile"></content>
+    <slot select="script,style,template" class="not-a-tile"></slot>
     <!-- <content select=":not([juicytile])" class="not-a-tile"></content> -->
 </template>
 
@@ -141,7 +141,13 @@ version: 0.0.7
          */
         proto._attachedCallback = function deferredGridAttached() {
             // move those two to created also for -grid and -list
-            var root = this.createShadowRoot();
+            var root;
+            if (this.attachShadow) {
+                root = this.attachShadow({ mode: 'open' });
+            } else {
+                root = this.createShadowRoot();
+            }
+
             var clone = document.importNode(template.content, true);
 
             // IE/polyfill support
