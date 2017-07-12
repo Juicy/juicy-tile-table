@@ -1,3 +1,7 @@
+:warning: This element is **DEPRECATED**, as CSS Grid Layout and Shadow DOM V1 is here.
+
+-----
+
 # &lt;juicy-tile-table&gt;
 
 > Masonry-like Custom Element for sortable tiles that packs efficiently without changing HTML structure (changes CSS and ShadowDOM only), and adapts it to `<table>` that mimic CSS Grid Layout.
